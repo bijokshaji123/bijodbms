@@ -1,0 +1,640 @@
+mysql> use OrDB;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> 
+
+1) 
+
+mysql> SELECT * from Employees where department_id in (select department_id from Departments where location_id =1700);
++-------------+-------------+------------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+| employee_id | first_name  | last_name  | email                             | phone_number | hire_date  | job_id | salary   | manager_id | department_id |
++-------------+-------------+------------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+|         200 | Jennifer    | Whalen     | jennifer.whalen@sqltutorial.org   | 515.123.4444 | 1987-09-17 |      3 |  4400.00 |        101 |             1 |
+|         114 | Den         | Raphaely   | den.raphaely@sqltutorial.org      | 515.127.4561 | 1994-12-07 |     14 | 11000.00 |        100 |             3 |
+|         115 | Alexander   | Khoo       | alexander.khoo@sqltutorial.org    | 515.127.4562 | 1995-05-18 |     13 |  3100.00 |        114 |             3 |
+|         116 | Shelli      | Baida      | shelli.baida@sqltutorial.org      | 515.127.4563 | 1997-12-24 |     13 |  2900.00 |        114 |             3 |
+|         117 | Sigal       | Tobias     | sigal.tobias@sqltutorial.org      | 515.127.4564 | 1997-07-24 |     13 |  2800.00 |        114 |             3 |
+|         118 | Guy         | Himuro     | guy.himuro@sqltutorial.org        | 515.127.4565 | 1998-11-15 |     13 |  2600.00 |        114 |             3 |
+|         119 | Karen       | Colmenares | karen.colmenares@sqltutorial.org  | 515.127.4566 | 1999-08-10 |     13 |  2500.00 |        114 |             3 |
+|         100 | Steven      | King       | steven.king@sqltutorial.org       | 515.123.4567 | 1987-06-17 |      4 | 24000.00 |       NULL |             9 |
+|         101 | Neena       | Kochhar    | neena.kochhar@sqltutorial.org     | 515.123.4568 | 1989-09-21 |      5 | 17000.00 |        100 |             9 |
+|         102 | Lex         | De Haan    | lex.de haan@sqltutorial.org       | 515.123.4569 | 1993-01-13 |      5 | 17000.00 |        100 |             9 |
+|         108 | Nancy       | Greenberg  | nancy.greenberg@sqltutorial.org   | 515.124.4569 | 1994-08-17 |      7 | 12000.00 |        101 |            10 |
+|         109 | Daniel      | Faviet     | daniel.faviet@sqltutorial.org     | 515.124.4169 | 1994-08-16 |      6 |  9000.00 |        108 |            10 |
+|         110 | John        | Chen       | john.chen@sqltutorial.org         | 515.124.4269 | 1997-09-28 |      6 |  8200.00 |        108 |            10 |
+|         111 | Ismael      | Sciarra    | ismael.sciarra@sqltutorial.org    | 515.124.4369 | 1997-09-30 |      6 |  7700.00 |        108 |            10 |
+|         112 | Jose Manuel | Urman      | jose manuel.urman@sqltutorial.org | 515.124.4469 | 1998-03-07 |      6 |  7800.00 |        108 |            10 |
+|         113 | Luis        | Popp       | luis.popp@sqltutorial.org         | 515.124.4567 | 1999-12-07 |      6 |  6900.00 |        108 |            10 |
+|         205 | Shelley     | Higgins    | shelley.higgins@sqltutorial.org   | 515.123.8080 | 1994-06-07 |      2 | 12000.00 |        101 |            11 |
+|         206 | William     | Gietz      | william.gietz@sqltutorial.org     | 515.123.8181 | 1994-06-07 |      1 |  8300.00 |        205 |            11 |
++-------------+-------------+------------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+18 rows in set (0.00 sec)
+
+2)
+
+mysql> SELECT * from Employees where department_id not in (select department_id from Departments where location_id =1700);
++-------------+------------+-------------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+| employee_id | first_name | last_name   | email                             | phone_number | hire_date  | job_id | salary   | manager_id | department_id |
++-------------+------------+-------------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+|         103 | Alexander  | Hunold      | alexander.hunold@sqltutorial.org  | 590.423.4567 | 1990-01-03 |      9 |  9000.00 |        102 |             6 |
+|         104 | Bruce      | Ernst       | bruce.ernst@sqltutorial.org       | 590.423.4568 | 1991-05-21 |      9 |  6000.00 |        103 |             6 |
+|         105 | David      | Austin      | david.austin@sqltutorial.org      | 590.423.4569 | 1997-06-25 |      9 |  4800.00 |        103 |             6 |
+|         106 | Valli      | Pataballa   | valli.pataballa@sqltutorial.org   | 590.423.4560 | 1998-02-05 |      9 |  4800.00 |        103 |             6 |
+|         107 | Diana      | Lorentz     | diana.lorentz@sqltutorial.org     | 590.423.5567 | 1999-02-07 |      9 |  4200.00 |        103 |             6 |
+|         120 | Matthew    | Weiss       | matthew.weiss@sqltutorial.org     | 650.123.1234 | 1996-07-18 |     19 |  8000.00 |        100 |             5 |
+|         121 | Adam       | Fripp       | adam.fripp@sqltutorial.org        | 650.123.2234 | 1997-04-10 |     19 |  8200.00 |        100 |             5 |
+|         122 | Payam      | Kaufling    | payam.kaufling@sqltutorial.org    | 650.123.3234 | 1995-05-01 |     19 |  7900.00 |        100 |             5 |
+|         123 | Shanta     | Vollman     | shanta.vollman@sqltutorial.org    | 650.123.4234 | 1997-10-10 |     19 |  6500.00 |        100 |             5 |
+|         126 | Irene      | Mikkilineni | irene.mikkilineni@sqltutorial.org | 650.124.1224 | 1998-09-28 |     18 |  2700.00 |        120 |             5 |
+|         192 | Sarah      | Bell        | sarah.bell@sqltutorial.org        | 650.501.1876 | 1996-02-04 |     17 |  4000.00 |        123 |             5 |
+|         193 | Britney    | Everett     | britney.everett@sqltutorial.org   | 650.501.2876 | 1997-03-03 |     17 |  3900.00 |        123 |             5 |
+|         201 | Michael    | Hartstein   | michael.hartstein@sqltutorial.org | 515.123.5555 | 1996-02-17 |     10 | 13000.00 |        100 |             2 |
+|         202 | Pat        | Fay         | pat.fay@sqltutorial.org           | 603.123.6666 | 1997-08-17 |     11 |  6000.00 |        201 |             2 |
+|         203 | Susan      | Mavris      | susan.mavris@sqltutorial.org      | 515.123.7777 | 1994-06-07 |      8 |  6500.00 |        101 |             4 |
+|         204 | Hermann    | Baer        | hermann.baer@sqltutorial.org      | 515.123.8888 | 1994-06-07 |     12 | 10000.00 |        101 |             7 |
++-------------+------------+-------------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+16 rows in set (0.00 sec)
+
+3)
+
+mysql> select * from Employees where salary=(select max(salary)from Employees);
++-------------+------------+-----------+-----------------------------+--------------+------------+--------+----------+------------+---------------+
+| employee_id | first_name | last_name | email                       | phone_number | hire_date  | job_id | salary   | manager_id | department_id |
++-------------+------------+-----------+-----------------------------+--------------+------------+--------+----------+------------+---------------+
+|         100 | Steven     | King      | steven.king@sqltutorial.org | 515.123.4567 | 1987-06-17 |      4 | 24000.00 |       NULL |             9 |
++-------------+------------+-----------+-----------------------------+--------------+------------+--------+----------+------------+---------------+
+1 row in set (0.00 sec)
+
+4)
+
+mysql> select * from Employees where salary>(select avg(salary)from Employees);
++-------------+-------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+| employee_id | first_name  | last_name | email                             | phone_number | hire_date  | job_id | salary   | manager_id | department_id |
++-------------+-------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+|         100 | Steven      | King      | steven.king@sqltutorial.org       | 515.123.4567 | 1987-06-17 |      4 | 24000.00 |       NULL |             9 |
+|         101 | Neena       | Kochhar   | neena.kochhar@sqltutorial.org     | 515.123.4568 | 1989-09-21 |      5 | 17000.00 |        100 |             9 |
+|         102 | Lex         | De Haan   | lex.de haan@sqltutorial.org       | 515.123.4569 | 1993-01-13 |      5 | 17000.00 |        100 |             9 |
+|         103 | Alexander   | Hunold    | alexander.hunold@sqltutorial.org  | 590.423.4567 | 1990-01-03 |      9 |  9000.00 |        102 |             6 |
+|         108 | Nancy       | Greenberg | nancy.greenberg@sqltutorial.org   | 515.124.4569 | 1994-08-17 |      7 | 12000.00 |        101 |            10 |
+|         109 | Daniel      | Faviet    | daniel.faviet@sqltutorial.org     | 515.124.4169 | 1994-08-16 |      6 |  9000.00 |        108 |            10 |
+|         110 | John        | Chen      | john.chen@sqltutorial.org         | 515.124.4269 | 1997-09-28 |      6 |  8200.00 |        108 |            10 |
+|         112 | Jose Manuel | Urman     | jose manuel.urman@sqltutorial.org | 515.124.4469 | 1998-03-07 |      6 |  7800.00 |        108 |            10 |
+|         114 | Den         | Raphaely  | den.raphaely@sqltutorial.org      | 515.127.4561 | 1994-12-07 |     14 | 11000.00 |        100 |             3 |
+|         120 | Matthew     | Weiss     | matthew.weiss@sqltutorial.org     | 650.123.1234 | 1996-07-18 |     19 |  8000.00 |        100 |             5 |
+|         121 | Adam        | Fripp     | adam.fripp@sqltutorial.org        | 650.123.2234 | 1997-04-10 |     19 |  8200.00 |        100 |             5 |
+|         122 | Payam       | Kaufling  | payam.kaufling@sqltutorial.org    | 650.123.3234 | 1995-05-01 |     19 |  7900.00 |        100 |             5 |
+|         201 | Michael     | Hartstein | michael.hartstein@sqltutorial.org | 515.123.5555 | 1996-02-17 |     10 | 13000.00 |        100 |             2 |
+|         204 | Hermann     | Baer      | hermann.baer@sqltutorial.org      | 515.123.8888 | 1994-06-07 |     12 | 10000.00 |        101 |             7 |
+|         205 | Shelley     | Higgins   | shelley.higgins@sqltutorial.org   | 515.123.8080 | 1994-06-07 |      2 | 12000.00 |        101 |            11 |
+|         206 | William     | Gietz     | william.gietz@sqltutorial.org     | 515.123.8181 | 1994-06-07 |      1 |  8300.00 |        205 |            11 |
++-------------+-------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+16 rows in set (0.00 sec)
+
+5)
+
+
+mysql> select d.department_id,d.department_name from Departments d where exists(select 1 from Employees e where e.department_id=d.department_id and e.salary>10000);
+
++---------------+-----------------+
+| department_id | department_name |
++---------------+-----------------+
+|             2 | Marketing       |
+|             3 | Purchasing      |
+|             9 | Executive       |
+|            10 | Finance         |
+|            11 | Accounting      |
++---------------+-----------------+
+5 rows in set (0.00 sec)
+
+6)
+
+mysql> select d.department_id,d.department_name from Departments d where not exists(select 1 from Employees e where e.department_id=d.department_id and e.salary>10000);
++---------------+------------------+
+| department_id | department_name  |
++---------------+------------------+
+|             1 | Administration   |
+|             4 | Human Resources  |
+|             5 | Shipping         |
+|             6 | IT               |
+|             7 | Public Relations |
+|             8 | Sales            |
++---------------+------------------+
+6 rows in set (0.00 sec)
+
+7)
+
+mysql> SELECT e.* FROM Employees e JOIN ( SELECT department_id, MIN(salary)
+    -> as min_salary FROM Employees GROUP BY department_id) AS dept_min_salary
+    -> ON e.department_id = dept_min_salary.department_id WHERE e.salary >
+    -> dept_min_salary.min_salary;
++-------------+-------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+| employee_id | first_name  | last_name | email                             | phone_number | hire_date  | job_id | salary   | manager_id | department_id |
++-------------+-------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+|         201 | Michael     | Hartstein | michael.hartstein@sqltutorial.org | 515.123.5555 | 1996-02-17 |     10 | 13000.00 |        100 |             2 |
+|         114 | Den         | Raphaely  | den.raphaely@sqltutorial.org      | 515.127.4561 | 1994-12-07 |     14 | 11000.00 |        100 |             3 |
+|         115 | Alexander   | Khoo      | alexander.khoo@sqltutorial.org    | 515.127.4562 | 1995-05-18 |     13 |  3100.00 |        114 |             3 |
+|         116 | Shelli      | Baida     | shelli.baida@sqltutorial.org      | 515.127.4563 | 1997-12-24 |     13 |  2900.00 |        114 |             3 |
+|         117 | Sigal       | Tobias    | sigal.tobias@sqltutorial.org      | 515.127.4564 | 1997-07-24 |     13 |  2800.00 |        114 |             3 |
+|         118 | Guy         | Himuro    | guy.himuro@sqltutorial.org        | 515.127.4565 | 1998-11-15 |     13 |  2600.00 |        114 |             3 |
+|         120 | Matthew     | Weiss     | matthew.weiss@sqltutorial.org     | 650.123.1234 | 1996-07-18 |     19 |  8000.00 |        100 |             5 |
+|         121 | Adam        | Fripp     | adam.fripp@sqltutorial.org        | 650.123.2234 | 1997-04-10 |     19 |  8200.00 |        100 |             5 |
+|         122 | Payam       | Kaufling  | payam.kaufling@sqltutorial.org    | 650.123.3234 | 1995-05-01 |     19 |  7900.00 |        100 |             5 |
+|         123 | Shanta      | Vollman   | shanta.vollman@sqltutorial.org    | 650.123.4234 | 1997-10-10 |     19 |  6500.00 |        100 |             5 |
+|         192 | Sarah       | Bell      | sarah.bell@sqltutorial.org        | 650.501.1876 | 1996-02-04 |     17 |  4000.00 |        123 |             5 |
+|         193 | Britney     | Everett   | britney.everett@sqltutorial.org   | 650.501.2876 | 1997-03-03 |     17 |  3900.00 |        123 |             5 |
+|         103 | Alexander   | Hunold    | alexander.hunold@sqltutorial.org  | 590.423.4567 | 1990-01-03 |      9 |  9000.00 |        102 |             6 |
+|         104 | Bruce       | Ernst     | bruce.ernst@sqltutorial.org       | 590.423.4568 | 1991-05-21 |      9 |  6000.00 |        103 |             6 |
+|         105 | David       | Austin    | david.austin@sqltutorial.org      | 590.423.4569 | 1997-06-25 |      9 |  4800.00 |        103 |             6 |
+|         106 | Valli       | Pataballa | valli.pataballa@sqltutorial.org   | 590.423.4560 | 1998-02-05 |      9 |  4800.00 |        103 |             6 |
+|         100 | Steven      | King      | steven.king@sqltutorial.org       | 515.123.4567 | 1987-06-17 |      4 | 24000.00 |       NULL |             9 |
+|         108 | Nancy       | Greenberg | nancy.greenberg@sqltutorial.org   | 515.124.4569 | 1994-08-17 |      7 | 12000.00 |        101 |            10 |
+|         109 | Daniel      | Faviet    | daniel.faviet@sqltutorial.org     | 515.124.4169 | 1994-08-16 |      6 |  9000.00 |        108 |            10 |
+|         110 | John        | Chen      | john.chen@sqltutorial.org         | 515.124.4269 | 1997-09-28 |      6 |  8200.00 |        108 |            10 |
+|         111 | Ismael      | Sciarra   | ismael.sciarra@sqltutorial.org    | 515.124.4369 | 1997-09-30 |      6 |  7700.00 |        108 |            10 |
+|         112 | Jose Manuel | Urman     | jose manuel.urman@sqltutorial.org | 515.124.4469 | 1998-03-07 |      6 |  7800.00 |        108 |            10 |
+|         205 | Shelley     | Higgins   | shelley.higgins@sqltutorial.org   | 515.123.8080 | 1994-06-07 |      2 | 12000.00 |        101 |            11 |
++-------------+-------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+23 rows in set (0.00 sec)
+
+8)
+
+mysql> SELECT e.* FROM Employees e JOIN ( SELECT department_id, MAX(salary)
+    -> as max_salary FROM Employees GROUP BY department_id) AS dept_max_salary
+    -> ON e.department_id = dept_max_salary.department_id WHERE e.salary >=
+    -> dept_max_salary.max_salary;
++-------------+------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+| employee_id | first_name | last_name | email                             | phone_number | hire_date  | job_id | salary   | manager_id | department_id |
++-------------+------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+|         200 | Jennifer   | Whalen    | jennifer.whalen@sqltutorial.org   | 515.123.4444 | 1987-09-17 |      3 |  4400.00 |        101 |             1 |
+|         201 | Michael    | Hartstein | michael.hartstein@sqltutorial.org | 515.123.5555 | 1996-02-17 |     10 | 13000.00 |        100 |             2 |
+|         114 | Den        | Raphaely  | den.raphaely@sqltutorial.org      | 515.127.4561 | 1994-12-07 |     14 | 11000.00 |        100 |             3 |
+|         203 | Susan      | Mavris    | susan.mavris@sqltutorial.org      | 515.123.7777 | 1994-06-07 |      8 |  6500.00 |        101 |             4 |
+|         121 | Adam       | Fripp     | adam.fripp@sqltutorial.org        | 650.123.2234 | 1997-04-10 |     19 |  8200.00 |        100 |             5 |
+|         103 | Alexander  | Hunold    | alexander.hunold@sqltutorial.org  | 590.423.4567 | 1990-01-03 |      9 |  9000.00 |        102 |             6 |
+|         204 | Hermann    | Baer      | hermann.baer@sqltutorial.org      | 515.123.8888 | 1994-06-07 |     12 | 10000.00 |        101 |             7 |
+|         100 | Steven     | King      | steven.king@sqltutorial.org       | 515.123.4567 | 1987-06-17 |      4 | 24000.00 |       NULL |             9 |
+|         108 | Nancy      | Greenberg | nancy.greenberg@sqltutorial.org   | 515.124.4569 | 1994-08-17 |      7 | 12000.00 |        101 |            10 |
+|         205 | Shelley    | Higgins   | shelley.higgins@sqltutorial.org   | 515.123.8080 | 1994-06-07 |      2 | 12000.00 |        101 |            11 |
++-------------+------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+10 rows in set (0.00 sec)
+
+9)
+
+mysql> SELECT AVG(dept_avg_salary) AS overall_avg_salary FROM (SELECT
+    -> department_id, AVG(salary) AS dept_avg_salary FROM Employees GROUP BY
+    -> department_id) AS dept_avg_salary_subquery;
++--------------------+
+| overall_avg_salary |
++--------------------+
+|    8427.9047619000 |
++--------------------+
+1 row in set (0.00 sec)
+
+10)
+
+mysql> SELECT employee_id, first_name, last_name, salary, (SELECT
+    -> ROUND(AVG(salary), 0) FROM Employees) average_salary, salary -(SELECT
+    -> ROUND(AVG(salary), 0)FROM Employees)difference FROM Employees ORDER BY
+    -> first_name , last_name;
++-------------+-------------+-------------+----------+----------------+------------+
+| employee_id | first_name  | last_name   | salary   | average_salary | difference |
++-------------+-------------+-------------+----------+----------------+------------+
+|         121 | Adam        | Fripp       |  8200.00 |           7785 |     415.00 |
+|         103 | Alexander   | Hunold      |  9000.00 |           7785 |    1215.00 |
+|         115 | Alexander   | Khoo        |  3100.00 |           7785 |   -4685.00 |
+|         193 | Britney     | Everett     |  3900.00 |           7785 |   -3885.00 |
+|         104 | Bruce       | Ernst       |  6000.00 |           7785 |   -1785.00 |
+|         109 | Daniel      | Faviet      |  9000.00 |           7785 |    1215.00 |
+|         105 | David       | Austin      |  4800.00 |           7785 |   -2985.00 |
+|         114 | Den         | Raphaely    | 11000.00 |           7785 |    3215.00 |
+|         107 | Diana       | Lorentz     |  4200.00 |           7785 |   -3585.00 |
+|         118 | Guy         | Himuro      |  2600.00 |           7785 |   -5185.00 |
+|         204 | Hermann     | Baer        | 10000.00 |           7785 |    2215.00 |
+|         126 | Irene       | Mikkilineni |  2700.00 |           7785 |   -5085.00 |
+|         111 | Ismael      | Sciarra     |  7700.00 |           7785 |     -85.00 |
+|         200 | Jennifer    | Whalen      |  4400.00 |           7785 |   -3385.00 |
+|         110 | John        | Chen        |  8200.00 |           7785 |     415.00 |
+|         112 | Jose Manuel | Urman       |  7800.00 |           7785 |      15.00 |
+|         119 | Karen       | Colmenares  |  2500.00 |           7785 |   -5285.00 |
+|         102 | Lex         | De Haan     | 17000.00 |           7785 |    9215.00 |
+|         113 | Luis        | Popp        |  6900.00 |           7785 |    -885.00 |
+|         120 | Matthew     | Weiss       |  8000.00 |           7785 |     215.00 |
+|         201 | Michael     | Hartstein   | 13000.00 |           7785 |    5215.00 |
+|         108 | Nancy       | Greenberg   | 12000.00 |           7785 |    4215.00 |
+|         101 | Neena       | Kochhar     | 17000.00 |           7785 |    9215.00 |
+|         202 | Pat         | Fay         |  6000.00 |           7785 |   -1785.00 |
+|         122 | Payam       | Kaufling    |  7900.00 |           7785 |     115.00 |
+|         192 | Sarah       | Bell        |  4000.00 |           7785 |   -3785.00 |
+|         123 | Shanta      | Vollman     |  6500.00 |           7785 |   -1285.00 |
+|         205 | Shelley     | Higgins     | 12000.00 |           7785 |    4215.00 |
+|         116 | Shelli      | Baida       |  2900.00 |           7785 |   -4885.00 |
+|         117 | Sigal       | Tobias      |  2800.00 |           7785 |   -4985.00 |
+|         100 | Steven      | King        | 24000.00 |           7785 |   16215.00 |
+|         203 | Susan       | Mavris      |  6500.00 |           7785 |   -1285.00 |
+|         106 | Valli       | Pataballa   |  4800.00 |           7785 |   -2985.00 |
+|         206 | William     | Gietz       |  8300.00 |           7785 |     515.00 |
++-------------+-------------+-------------+----------+----------------+------------+
+34 rows in set (0.00 sec)
+
+11)
+
+mysql> SELECT e.* FROM Employees e WHERE e.salary > (SELECT AVG(e2.salary)
+    -> FROM Employees e2 WHERE e2.department_id = e.department_id);
++-------------+------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+| employee_id | first_name | last_name | email                             | phone_number | hire_date  | job_id | salary   | manager_id | department_id |
++-------------+------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+|         100 | Steven     | King      | steven.king@sqltutorial.org       | 515.123.4567 | 1987-06-17 |      4 | 24000.00 |       NULL |             9 |
+|         103 | Alexander  | Hunold    | alexander.hunold@sqltutorial.org  | 590.423.4567 | 1990-01-03 |      9 |  9000.00 |        102 |             6 |
+|         104 | Bruce      | Ernst     | bruce.ernst@sqltutorial.org       | 590.423.4568 | 1991-05-21 |      9 |  6000.00 |        103 |             6 |
+|         108 | Nancy      | Greenberg | nancy.greenberg@sqltutorial.org   | 515.124.4569 | 1994-08-17 |      7 | 12000.00 |        101 |            10 |
+|         109 | Daniel     | Faviet    | daniel.faviet@sqltutorial.org     | 515.124.4169 | 1994-08-16 |      6 |  9000.00 |        108 |            10 |
+|         114 | Den        | Raphaely  | den.raphaely@sqltutorial.org      | 515.127.4561 | 1994-12-07 |     14 | 11000.00 |        100 |             3 |
+|         120 | Matthew    | Weiss     | matthew.weiss@sqltutorial.org     | 650.123.1234 | 1996-07-18 |     19 |  8000.00 |        100 |             5 |
+|         121 | Adam       | Fripp     | adam.fripp@sqltutorial.org        | 650.123.2234 | 1997-04-10 |     19 |  8200.00 |        100 |             5 |
+|         122 | Payam      | Kaufling  | payam.kaufling@sqltutorial.org    | 650.123.3234 | 1995-05-01 |     19 |  7900.00 |        100 |             5 |
+|         123 | Shanta     | Vollman   | shanta.vollman@sqltutorial.org    | 650.123.4234 | 1997-10-10 |     19 |  6500.00 |        100 |             5 |
+|         201 | Michael    | Hartstein | michael.hartstein@sqltutorial.org | 515.123.5555 | 1996-02-17 |     10 | 13000.00 |        100 |             2 |
+|         205 | Shelley    | Higgins   | shelley.higgins@sqltutorial.org   | 515.123.8080 | 1994-06-07 |      2 | 12000.00 |        101 |            11 |
++-------------+------------+-----------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+12 rows in set (0.00 sec)
+
+12)
+
+
+mysql> select * from Employees where employee_id not in (select employee_id from Dependents);
++-------------+------------+-------------+-----------------------------------+--------------+------------+--------+---------+------------+---------------+
+| employee_id | first_name | last_name   | email                             | phone_number | hire_date  | job_id | salary  | manager_id | department_id |
++-------------+------------+-------------+-----------------------------------+--------------+------------+--------+---------+------------+---------------+
+|         120 | Matthew    | Weiss       | matthew.weiss@sqltutorial.org     | 650.123.1234 | 1996-07-18 |     19 | 8000.00 |        100 |             5 |
+|         121 | Adam       | Fripp       | adam.fripp@sqltutorial.org        | 650.123.2234 | 1997-04-10 |     19 | 8200.00 |        100 |             5 |
+|         122 | Payam      | Kaufling    | payam.kaufling@sqltutorial.org    | 650.123.3234 | 1995-05-01 |     19 | 7900.00 |        100 |             5 |
+|         123 | Shanta     | Vollman     | shanta.vollman@sqltutorial.org    | 650.123.4234 | 1997-10-10 |     19 | 6500.00 |        100 |             5 |
+|         126 | Irene      | Mikkilineni | irene.mikkilineni@sqltutorial.org | 650.124.1224 | 1998-09-28 |     18 | 2700.00 |        120 |             5 |
+|         192 | Sarah      | Bell        | sarah.bell@sqltutorial.org        | 650.501.1876 | 1996-02-04 |     17 | 4000.00 |        123 |             5 |
+|         193 | Britney    | Everett     | britney.everett@sqltutorial.org   | 650.501.2876 | 1997-03-03 |     17 | 3900.00 |        123 |             5 |
++-------------+------------+-------------+-----------------------------------+--------------+------------+--------+---------+------------+---------------+
+7 rows in set (0.00 sec)
+
+13)
+
+
+mysql> select e.first_name,e.last_name,d.department_name from Employees e JOIN Departments d ON e.department_id=d.department_id where e.department_id IN ('1','2','3');
++------------+------------+-----------------+
+| first_name | last_name  | department_name |
++------------+------------+-----------------+
+| Jennifer   | Whalen     | Administration  |
+| Michael    | Hartstein  | Marketing       |
+| Pat        | Fay        | Marketing       |
+| Den        | Raphaely   | Purchasing      |
+| Alexander  | Khoo       | Purchasing      |
+| Shelli     | Baida      | Purchasing      |
+| Sigal      | Tobias     | Purchasing      |
+| Guy        | Himuro     | Purchasing      |
+| Karen      | Colmenares | Purchasing      |
++------------+------------+-----------------+
+9 rows in set (0.00 sec)
+
+14)
+
+
+mysql> select e.first_name,e.last_name,d.department_name,j.job_title from Jobs j JOIN Employees e ON j.job_id=e.job_id JOIN Departments d ON e.department_id=d.department_id where e.department_id IN ('1','2','3') AND e.salary>10000;
++------------+-----------+-----------------+--------------------+
+| first_name | last_name | department_name | job_title          |
++------------+-----------+-----------------+--------------------+
+| Michael    | Hartstein | Marketing       | Marketing Manager  |
+| Den        | Raphaely  | Purchasing      | Purchasing Manager |
++------------+-----------+-----------------+--------------------+
+2 rows in set (0.00 sec)
+
+15)
+
+
+mysql> SELECT d.department_name, l.street_address, l.postal_code, c.country_name, r.region_name FROM Departments d JOIN Locations l ON d.location_id=l.location_id JOIN Countries c ON l.country_id = c.country_id JOIN Regions r ON c.region_id = r.region_id;
++------------------+------------------------------------------+-------------+--------------------------+-------------+
+| department_name  | street_address                           | postal_code | country_name             | region_name |
++------------------+------------------------------------------+-------------+--------------------------+-------------+
+| IT               | 2014 Jabberwocky Rd                      | 26192       | United States of America | Americas    |
+| Shipping         | 2011 Interiors Blvd                      | 99236       | United States of America | Americas    |
+| Accounting       | 2004 Charade Rd                          | 98199       | United States of America | Americas    |
+| Finance          | 2004 Charade Rd                          | 98199       | United States of America | Americas    |
+| Executive        | 2004 Charade Rd                          | 98199       | United States of America | Americas    |
+| Purchasing       | 2004 Charade Rd                          | 98199       | United States of America | Americas    |
+| Administration   | 2004 Charade Rd                          | 98199       | United States of America | Americas    |
+| Marketing        | 147 Spadina Ave                          | M5V 2L7     | Centia                   | Asia        |
+| Human Resources  | 8204 Arthur St                           | 12          | United Kingdom           | Europe      |
+| Sales            | Magdalen Centre, The Oxford Science Park | OX9 9ZB     | United Kingdom           | Europe      |
+| Public Relations | Schwanthalerstr. 7031                    | 80925       | Denmark                  | Europe      |
++------------------+------------------------------------------+-------------+--------------------------+-------------+
+11 rows in set (0.00 sec)
+
+16)
+
+
+mysql> SELECT e.first_name, e.last_name, d.department_id, d.department_name FROM Employees e LEFT JOIN Departments d ON e.department_id = d.department_id;
++-------------+-------------+---------------+------------------+
+| first_name  | last_name   | department_id | department_name  |
++-------------+-------------+---------------+------------------+
+| Steven      | King        |             9 | Executive        |
+| Neena       | Kochhar     |             9 | Executive        |
+| Lex         | De Haan     |             9 | Executive        |
+| Alexander   | Hunold      |             6 | IT               |
+| Bruce       | Ernst       |             6 | IT               |
+| David       | Austin      |             6 | IT               |
+| Valli       | Pataballa   |             6 | IT               |
+| Diana       | Lorentz     |             6 | IT               |
+| Nancy       | Greenberg   |            10 | Finance          |
+| Daniel      | Faviet      |            10 | Finance          |
+| John        | Chen        |            10 | Finance          |
+| Ismael      | Sciarra     |            10 | Finance          |
+| Jose Manuel | Urman       |            10 | Finance          |
+| Luis        | Popp        |            10 | Finance          |
+| Den         | Raphaely    |             3 | Purchasing       |
+| Alexander   | Khoo        |             3 | Purchasing       |
+| Shelli      | Baida       |             3 | Purchasing       |
+| Sigal       | Tobias      |             3 | Purchasing       |
+| Guy         | Himuro      |             3 | Purchasing       |
+| Karen       | Colmenares  |             3 | Purchasing       |
+| Matthew     | Weiss       |             5 | Shipping         |
+| Adam        | Fripp       |             5 | Shipping         |
+| Payam       | Kaufling    |             5 | Shipping         |
+| Shanta      | Vollman     |             5 | Shipping         |
+| Irene       | Mikkilineni |             5 | Shipping         |
+| Sarah       | Bell        |             5 | Shipping         |
+| Britney     | Everett     |             5 | Shipping         |
+| Jennifer    | Whalen      |             1 | Administration   |
+| Michael     | Hartstein   |             2 | Marketing        |
+| Pat         | Fay         |             2 | Marketing        |
+| Susan       | Mavris      |             4 | Human Resources  |
+| Hermann     | Baer        |             7 | Public Relations |
+| Shelley     | Higgins     |            11 | Accounting       |
+| William     | Gietz       |            11 | Accounting       |
++-------------+-------------+---------------+------------------+
+34 rows in set (0.00 sec)
+
+17)
+
+
+mysql> SELECT e.first_name, e.last_name, d.department_name, l.city, l.state_province FROM Employees e JOIN Departments d ON e.department_id = d.department_id JOIN Locations l ON d.location_id=l.location_id WHERE e.first_name LIKE '%Z%';
+Empty set (0.00 sec)
+
+18)
+
+
+mysql> SELECT e.first_name, e.last_name, d.department_name, l.city, l.state_province FROM Employees e JOIN Departments d ON e.department_id = d.department_id JOIN Locations l ON d.location_id=l.location_id WHERE e.first_name LIKE '%Z%';
+Empty set (0.00 sec)
+
+19)
+
+
+mysql> SELECT e.first_name, e.last_name, d.department_id, d.department_name FROM Departments d LEFT JOIN Employees e ON d.department_id = e.department_id;
++-------------+-------------+---------------+------------------+
+| first_name  | last_name   | department_id | department_name  |
++-------------+-------------+---------------+------------------+
+| Jennifer    | Whalen      |             1 | Administration   |
+| Michael     | Hartstein   |             2 | Marketing        |
+| Pat         | Fay         |             2 | Marketing        |
+| Den         | Raphaely    |             3 | Purchasing       |
+| Alexander   | Khoo        |             3 | Purchasing       |
+| Shelli      | Baida       |             3 | Purchasing       |
+| Sigal       | Tobias      |             3 | Purchasing       |
+| Guy         | Himuro      |             3 | Purchasing       |
+| Karen       | Colmenares  |             3 | Purchasing       |
+| Susan       | Mavris      |             4 | Human Resources  |
+| Matthew     | Weiss       |             5 | Shipping         |
+| Adam        | Fripp       |             5 | Shipping         |
+| Payam       | Kaufling    |             5 | Shipping         |
+| Shanta      | Vollman     |             5 | Shipping         |
+| Irene       | Mikkilineni |             5 | Shipping         |
+| Sarah       | Bell        |             5 | Shipping         |
+| Britney     | Everett     |             5 | Shipping         |
+| Alexander   | Hunold      |             6 | IT               |
+| Bruce       | Ernst       |             6 | IT               |
+| David       | Austin      |             6 | IT               |
+| Valli       | Pataballa   |             6 | IT               |
+| Diana       | Lorentz     |             6 | IT               |
+| Hermann     | Baer        |             7 | Public Relations |
+| NULL        | NULL        |             8 | Sales            |
+| Steven      | King        |             9 | Executive        |
+| Neena       | Kochhar     |             9 | Executive        |
+| Lex         | De Haan     |             9 | Executive        |
+| Nancy       | Greenberg   |            10 | Finance          |
+| Daniel      | Faviet      |            10 | Finance          |
+| John        | Chen        |            10 | Finance          |
+| Ismael      | Sciarra     |            10 | Finance          |
+| Jose Manuel | Urman       |            10 | Finance          |
+| Luis        | Popp        |            10 | Finance          |
+| Shelley     | Higgins     |            11 | Accounting       |
+| William     | Gietz       |            11 | Accounting       |
++-------------+-------------+---------------+------------------+
+35 rows in set (0.00 sec)
+
+20)
+
+mysql> SELECT e.first_name AS employee_first_name, m.first_name AS
+    -> manager_first_name FROM Employees e LEFT JOIN Employees m ON
+    -> e.manager_id = m.employee_id;
++---------------------+--------------------+
+| employee_first_name | manager_first_name |
++---------------------+--------------------+
+| Steven              | NULL               |
+| Neena               | Steven             |
+| Lex                 | Steven             |
+| Alexander           | Lex                |
+| Bruce               | Alexander          |
+| David               | Alexander          |
+| Valli               | Alexander          |
+| Diana               | Alexander          |
+| Nancy               | Neena              |
+| Daniel              | Nancy              |
+| John                | Nancy              |
+| Ismael              | Nancy              |
+| Jose Manuel         | Nancy              |
+| Luis                | Nancy              |
+| Den                 | Steven             |
+| Alexander           | Den                |
+| Shelli              | Den                |
+| Sigal               | Den                |
+| Guy                 | Den                |
+| Karen               | Den                |
+| Matthew             | Steven             |
+| Adam                | Steven             |
+| Payam               | Steven             |
+| Shanta              | Steven             |
+| Irene               | Matthew            |
+| Sarah               | Shanta             |
+| Britney             | Shanta             |
+| Jennifer            | Neena              |
+| Michael             | Steven             |
+| Pat                 | Michael            |
+| Susan               | Neena              |
+| Hermann             | Neena              |
+| Shelley             | Neena              |
+| William             | Shelley            |
++---------------------+--------------------+
+34 rows in set (0.00 sec)
+
+21)
+
+mysql> SELECT e.first_name, e.last_name, e.department_id FROM Employees e
+    -> INNER JOIN Employees t ON e.department_id = t.department_id WHERE
+    -> t.last_name = 'Taylor';
+Empty set (0.00 sec)
+
+22)
+
+
+mysql> SELECT j.job_title, CONCAT(e.first_name, ' ', e.last_name) AS employee_name, (j.max_salary - e.salary) AS salary_difference FROM Employees e INNER JOIN Jobs j ON e.job_id = j.job_id;
++---------------------------------+-------------------+-------------------+
+| job_title                       | employee_name     | salary_difference |
++---------------------------------+-------------------+-------------------+
+| President                       | Steven King       |          16000.00 |
+| Administration Vice President   | Neena Kochhar     |          13000.00 |
+| Administration Vice President   | Lex De Haan       |          13000.00 |
+| Programmer                      | Alexander Hunold  |           1000.00 |
+| Programmer                      | Bruce Ernst       |           4000.00 |
+| Programmer                      | David Austin      |           5200.00 |
+| Programmer                      | Valli Pataballa   |           5200.00 |
+| Programmer                      | Diana Lorentz     |           5800.00 |
+| Finance Manager                 | Nancy Greenberg   |           4000.00 |
+| Accountant                      | Daniel Faviet     |              0.00 |
+| Accountant                      | John Chen         |            800.00 |
+| Accountant                      | Ismael Sciarra    |           1300.00 |
+| Accountant                      | Jose Manuel Urman |           1200.00 |
+| Accountant                      | Luis Popp         |           2100.00 |
+| Purchasing Manager              | Den Raphaely      |           4000.00 |
+| Purchasing Clerk                | Alexander Khoo    |           2400.00 |
+| Purchasing Clerk                | Shelli Baida      |           2600.00 |
+| Purchasing Clerk                | Sigal Tobias      |           2700.00 |
+| Purchasing Clerk                | Guy Himuro        |           2900.00 |
+| Purchasing Clerk                | Karen Colmenares  |           3000.00 |
+| Stock Manager                   | Matthew Weiss     |            500.00 |
+| Stock Manager                   | Adam Fripp        |            300.00 |
+| Stock Manager                   | Payam Kaufling    |            600.00 |
+| Stock Manager                   | Shanta Vollman    |           2000.00 |
+| Stock Clerk                     | Irene Mikkilineni |           2300.00 |
+| Shipping Clerk                  | Sarah Bell        |           1500.00 |
+| Shipping Clerk                  | Britney Everett   |           1600.00 |
+| Administration Assistant        | Jennifer Whalen   |           1600.00 |
+| Marketing Manager               | Michael Hartstein |           2000.00 |
+| Marketing Representative        | Pat Fay           |           3000.00 |
+| Human Resources Representative  | Susan Mavris      |           2500.00 |
+| Public Relations Representative | Hermann Baer      |            500.00 |
+| Accounting Manager              | Shelley Higgins   |           4000.00 |
+| Public Accountant               | William Gietz     |            700.00 |
++---------------------------------+-------------------+-------------------+
+34 rows in set (0.00 sec)
+
+23)
+
+
+mysql> SELECT d.department_name AS department_name, AVG(e.salary) AS average_salary, COUNT(e.department_id) AS number_of_employees FROM Departments d LEFT JOIN Employees e ON d.department_id = e.department_id GROUP BY d.department_name;
++------------------+----------------+---------------------+
+| department_name  | average_salary | number_of_employees |
++------------------+----------------+---------------------+
+| Administration   |    4400.000000 |                   1 |
+| Marketing        |    9500.000000 |                   2 |
+| Purchasing       |    4150.000000 |                   6 |
+| Human Resources  |    6500.000000 |                   1 |
+| Shipping         |    5885.714286 |                   7 |
+| IT               |    5760.000000 |                   5 |
+| Public Relations |   10000.000000 |                   1 |
+| Sales            |           NULL |                   0 |
+| Executive        |   19333.333333 |                   3 |
+| Finance          |    8600.000000 |                   6 |
+| Accounting       |   10150.000000 |                   2 |
++------------------+----------------+---------------------+
+11 rows in set (0.00 sec)
+
+24)
+
+
+mysql> CREATE VIEW v_employee_details AS SELECT e.first_name, e.last_name, e.employee_id, e.phone_number, j.job_title, d.department_name, CONCAT(m.first_name, ' ', m.last_name) AS manager_name FROM Employees e INNER JOIN Jobs j ON e.job_id = j.job_id INNER JOIN Departments d ON e.department_id = d.department_id LEFT JOIN Employees m ON e.manager_id = m.employee_id WHERE d.location_id IN (SELECT location_id FROM Locations WHERE city = 'DELHI');
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from v_employee_details;
+Empty set (0.00 sec)
+
+mysql> SELECT first_name, last_name FROM v_employee_details WHERE job_title =
+    -> 'Manager' AND department_name = 'Finance';
+Empty set (0.00 sec)
+
+25)
+
+mysql> UPDATE v_employee_details SET phone_number = 6985741230 WHERE
+    -> first_name = 'Smith';
+    
+26)
+
+
+mysql> SELECT e.employee_id, e.first_name, e.last_name, e.phone_number FROM Employees e LEFT JOIN Dependents dep ON e.employee_id = dep.employee_id WHERE dep.employee_id IS NULL;
++-------------+------------+-------------+--------------+
+| employee_id | first_name | last_name   | phone_number |
++-------------+------------+-------------+--------------+
+|         120 | Matthew    | Weiss       | 650.123.1234 |
+|         121 | Adam       | Fripp       | 650.123.2234 |
+|         122 | Payam      | Kaufling    | 650.123.3234 |
+|         123 | Shanta     | Vollman     | 650.123.4234 |
+|         126 | Irene      | Mikkilineni | 650.124.1224 |
+|         192 | Sarah      | Bell        | 650.501.1876 |
+|         193 | Britney    | Everett     | 650.501.2876 |
++-------------+------------+-------------+--------------+
+7 rows in set (0.00 sec)
+
+27)
+
+mysql> select * from Employees where manager_id = '101' UNION select * from
+    -> Employees where manager_id='201';
++-------------+------------+-----------+---------------------------------+--------------+------------+--------+----------+------------+---------------+
+| employee_id | first_name | last_name | email                           | phone_number | hire_date  | job_id | salary   | manager_id | department_id |
++-------------+------------+-----------+---------------------------------+--------------+------------+--------+----------+------------+---------------+
+|         108 | Nancy      | Greenberg | nancy.greenberg@sqltutorial.org | 515.124.4569 | 1994-08-17 |      7 | 12000.00 |        101 |            10 |
+|         200 | Jennifer   | Whalen    | jennifer.whalen@sqltutorial.org | 515.123.4444 | 1987-09-17 |      3 |  4400.00 |        101 |             1 |
+|         203 | Susan      | Mavris    | susan.mavris@sqltutorial.org    | 515.123.7777 | 1994-06-07 |      8 |  6500.00 |        101 |             4 |
+|         204 | Hermann    | Baer      | hermann.baer@sqltutorial.org    | 515.123.8888 | 1994-06-07 |     12 | 10000.00 |        101 |             7 |
+|         205 | Shelley    | Higgins   | shelley.higgins@sqltutorial.org | 515.123.8080 | 1994-06-07 |      2 | 12000.00 |        101 |            11 |
+|         202 | Pat        | Fay       | pat.fay@sqltutorial.org         | 603.123.6666 | 1997-08-17 |     11 |  6000.00 |        201 |             2 |
++-------------+------------+-----------+---------------------------------+--------------+------------+--------+----------+------------+---------------+
+6 rows in set (0.00 sec)
+
+28)
+
+mysql> select * from Employees where employee_id in (select distinct(employee_id)
+    -> from Dependents);
++-------------+-------------+------------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+| employee_id | first_name  | last_name  | email                             | phone_number | hire_date  | job_id | salary   | manager_id | department_id |
++-------------+-------------+------------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+|         100 | Steven      | King       | steven.king@sqltutorial.org       | 515.123.4567 | 1987-06-17 |      4 | 24000.00 |       NULL |             9 |
+|         101 | Neena       | Kochhar    | neena.kochhar@sqltutorial.org     | 515.123.4568 | 1989-09-21 |      5 | 17000.00 |        100 |             9 |
+|         102 | Lex         | De Haan    | lex.de haan@sqltutorial.org       | 515.123.4569 | 1993-01-13 |      5 | 17000.00 |        100 |             9 |
+|         103 | Alexander   | Hunold     | alexander.hunold@sqltutorial.org  | 590.423.4567 | 1990-01-03 |      9 |  9000.00 |        102 |             6 |
+|         104 | Bruce       | Ernst      | bruce.ernst@sqltutorial.org       | 590.423.4568 | 1991-05-21 |      9 |  6000.00 |        103 |             6 |
+|         105 | David       | Austin     | david.austin@sqltutorial.org      | 590.423.4569 | 1997-06-25 |      9 |  4800.00 |        103 |             6 |
+|         106 | Valli       | Pataballa  | valli.pataballa@sqltutorial.org   | 590.423.4560 | 1998-02-05 |      9 |  4800.00 |        103 |             6 |
+|         107 | Diana       | Lorentz    | diana.lorentz@sqltutorial.org     | 590.423.5567 | 1999-02-07 |      9 |  4200.00 |        103 |             6 |
+|         108 | Nancy       | Greenberg  | nancy.greenberg@sqltutorial.org   | 515.124.4569 | 1994-08-17 |      7 | 12000.00 |        101 |            10 |
+|         109 | Daniel      | Faviet     | daniel.faviet@sqltutorial.org     | 515.124.4169 | 1994-08-16 |      6 |  9000.00 |        108 |            10 |
+|         110 | John        | Chen       | john.chen@sqltutorial.org         | 515.124.4269 | 1997-09-28 |      6 |  8200.00 |        108 |            10 |
+|         111 | Ismael      | Sciarra    | ismael.sciarra@sqltutorial.org    | 515.124.4369 | 1997-09-30 |      6 |  7700.00 |        108 |            10 |
+|         112 | Jose Manuel | Urman      | jose manuel.urman@sqltutorial.org | 515.124.4469 | 1998-03-07 |      6 |  7800.00 |        108 |            10 |
+|         113 | Luis        | Popp       | luis.popp@sqltutorial.org         | 515.124.4567 | 1999-12-07 |      6 |  6900.00 |        108 |            10 |
+|         114 | Den         | Raphaely   | den.raphaely@sqltutorial.org      | 515.127.4561 | 1994-12-07 |     14 | 11000.00 |        100 |             3 |
+|         115 | Alexander   | Khoo       | alexander.khoo@sqltutorial.org    | 515.127.4562 | 1995-05-18 |     13 |  3100.00 |        114 |             3 |
+|         116 | Shelli      | Baida      | shelli.baida@sqltutorial.org      | 515.127.4563 | 1997-12-24 |     13 |  2900.00 |        114 |             3 |
+|         117 | Sigal       | Tobias     | sigal.tobias@sqltutorial.org      | 515.127.4564 | 1997-07-24 |     13 |  2800.00 |        114 |             3 |
+|         118 | Guy         | Himuro     | guy.himuro@sqltutorial.org        | 515.127.4565 | 1998-11-15 |     13 |  2600.00 |        114 |             3 |
+|         119 | Karen       | Colmenares | karen.colmenares@sqltutorial.org  | 515.127.4566 | 1999-08-10 |     13 |  2500.00 |        114 |             3 |
+|         200 | Jennifer    | Whalen     | jennifer.whalen@sqltutorial.org   | 515.123.4444 | 1987-09-17 |      3 |  4400.00 |        101 |             1 |
+|         201 | Michael     | Hartstein  | michael.hartstein@sqltutorial.org | 515.123.5555 | 1996-02-17 |     10 | 13000.00 |        100 |             2 |
+|         202 | Pat         | Fay        | pat.fay@sqltutorial.org           | 603.123.6666 | 1997-08-17 |     11 |  6000.00 |        201 |             2 |
+|         203 | Susan       | Mavris     | susan.mavris@sqltutorial.org      | 515.123.7777 | 1994-06-07 |      8 |  6500.00 |        101 |             4 |
+|         204 | Hermann     | Baer       | hermann.baer@sqltutorial.org      | 515.123.8888 | 1994-06-07 |     12 | 10000.00 |        101 |             7 |
+|         205 | Shelley     | Higgins    | shelley.higgins@sqltutorial.org   | 515.123.8080 | 1994-06-07 |      2 | 12000.00 |        101 |            11 |
+|         206 | William     | Gietz      | william.gietz@sqltutorial.org     | 515.123.8181 | 1994-06-07 |      1 |  8300.00 |        205 |            11 |
++-------------+-------------+------------+-----------------------------------+--------------+------------+--------+----------+------------+---------------+
+27 rows in set (0.00 sec)
+
+mysql> 
+
+
